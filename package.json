@@ -9,8 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@auth/mongodb-adapter": "^3.3.0",
-    "axios": "^1.7.2",
+    "@auth/mongodb-adapter": "^3.4.2",
+    "@eslint/config-array": "^0.17.1",
+    "@eslint/object-schema": "^2.1.4",
+    "axios": "^1.7.3",
+    "glob": "^11.0.0",
     "mongodb": "^6.7.0",
     "mongoose": "^8.4.3",
     "next": "14.2.4",
@@ -20,8 +23,8 @@
     "react-hot-toast": "^2.4.1"
   },
   "devDependencies": {
-    "eslint": "^8",
-    "eslint-config-next": "14.2.4",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.5",
     "postcss": "^8",
     "react-router-dom": "^6.23.1",
     "tailwindcss": "^3.4.1"
