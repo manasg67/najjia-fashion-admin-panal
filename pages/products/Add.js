@@ -8,7 +8,7 @@ function Add() {
                 <p className='text-xl text-orange-600 font-medium '>Fill all fields to add new product</p>
             </div>
 
-            <hr class="my-2 h-px border-0 bg-gray-300" />
+            <hr className="my-2 h-px border-0 bg-gray-300" />
             {/* Form Starts */}
             <div className=''>
             <Products/>

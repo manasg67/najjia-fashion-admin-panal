@@ -46,7 +46,7 @@ function index() {
                 </label>
                 <div className="mt-2 flex items-center gap-x-3">
                   <div className="w-10 h-10">
-                    <img class="h-full w-full rounded-full object-contain object-center" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="" width={34} height={34} />
+                    <img className="h-full w-full rounded-full object-contain object-center" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="" width={34} height={34} />
                   </div>
 
                   <button

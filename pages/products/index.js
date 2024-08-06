@@ -122,8 +122,8 @@ export default function index() {
                                 >
                                     <span className="text-sm font-medium"> Create Products </span>
 
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                     </svg>
 
 
@@ -134,7 +134,7 @@ export default function index() {
                 </header>
 
 
-                <hr class="my-1 h-px border-0 bg-gray-300" />
+                <hr className="my-1 h-px border-0 bg-gray-300" />
                 {/* Products */}
                 <div>
 
@@ -144,35 +144,35 @@ export default function index() {
                         ) : (
 
 
-                            <div class="ml-5 mr-5">
-                                <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
-                                    <thead class="bg-gray-50">
+                            <div className="ml-5 mr-5">
+                                <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
+                                    <thead className="bg-gray-50">
                                         <tr>
-                                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Name</th>
-                                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Description</th>
-                                            {/* <th scope="col" class="px-6 py-4 font-medium text-gray-900">Price</th> */}
-                                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">Category</th>
-                                            <th scope="col" class="px-6 py-4 font-medium text-gray-900"></th>
+                                            <th scope="col" className="px-6 py-4 font-medium text-gray-900">Name</th>
+                                            <th scope="col" className="px-6 py-4 font-medium text-gray-900">Description</th>
+                                            {/* <th scope="col" className="px-6 py-4 font-medium text-gray-900">Price</th> */}
+                                            <th scope="col" className="px-6 py-4 font-medium text-gray-900">Category</th>
+                                            <th scope="col" className="px-6 py-4 font-medium text-gray-900"></th>
                                         </tr>
                                     </thead>
 
-                                    <tbody class="divide-y divide-gray-100 border-t border-gray-100">
+                                    <tbody className="divide-y divide-gray-100 border-t border-gray-100">
                                         {products.map(product => (
                                             <tr>
 
                                                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                                                     <img src={product.images[0]} style={{ height: '35px', width: '35px', borderRadius: '10px', marginTop: '8px' }} />
-                                                    <th class="px-6 py-4 font-medium text-gray-900">{product.title}</th>
+                                                    <th className="px-6 py-4 font-medium text-gray-900">{product.title}</th>
                                                 </div>
-                                                <td class="px-6 py-4">{product.description}</td>
-                                                {/* <td class="px-6 py-4">{product.price}</td> */}
-                                                <td class="px-6 py-4">{product.category}</td>
+                                                <td className="px-6 py-4">{product.description}</td>
+                                                {/* <td className="px-6 py-4">{product.price}</td> */}
+                                                <td className="px-6 py-4">{product.category}</td>
 
                                                 <div style={{ display: 'flex', flexDirection: 'row', gap: 25 }}>
                                                     <div className='mt-3 '>
 
                                                         <button
-                                                            class="flex  gap-4 px-6 py-4 font-medium bg-green-500 text-white border-green-500 rounded-xl h-5"
+                                                            className="flex  gap-4 px-6 py-4 font-medium bg-green-500 text-white border-green-500 rounded-xl h-5"
                                                             onClick={() => handleEdit(product._id.toString())}
 
                                                         >
@@ -183,7 +183,7 @@ export default function index() {
                                                     <div className='mt-3  '>
                                                         <button
                                                             onClick={() => deleteProduct(product._id.toString())}
-                                                            class="flex  gap-4 px-6 py-4 font-medium bg-red-500 text-white border-red-500 rounded-xl h-5"   >
+                                                            className="flex  gap-4 px-6 py-4 font-medium bg-red-500 text-white border-red-500 rounded-xl h-5"   >
                                                             <p style={{ justifyContent: 'center', justifyItems: 'center', marginTop: '-10px' }}>Delete</p>
                                                         </button>
                                                     </div>
