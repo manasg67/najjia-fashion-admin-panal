@@ -7,7 +7,7 @@ import Footer from "@/Components/Footer";
 function MyApp({ Component, }) {
   return (
     <main >
-      <Header />
+      <Header/>
       <Component />
       <Footer />
     </main>
