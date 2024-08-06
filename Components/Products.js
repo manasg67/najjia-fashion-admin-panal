@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useHref } from 'react-router-dom';
-import { redirect } from 'next/navigation';
-
+import Image from 'next/image'; // Use Next.js's Image component
 
 function Products() {
     const router = useRouter();
-
-
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -18,7 +14,7 @@ function Products() {
     const [color, setcolor] = useState('');
     const [size, setsize] = useState('');
     const [gender, setgender] = useState('');
-    const [category, setcategory] = useState([]);
+    const [category, setcategory] = useState('0'); // Initialize as string
     const [images, setImages] = useState([]);
     const [imagePreviews, setImagePreviews] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -43,17 +39,16 @@ function Products() {
         try {
             const res = await axios.post('http://localhost:8000/upload2', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+                    'Content-Type': 'multipart/form-data',
+                },
             });
             console.log(res.data); // Handle success response
             alert('Product uploaded successfully!');
-            router.push('/products')
+            router.push('/products');
         } catch (err) {
             console.error(err); // Handle error
-            console.log(err)
-            // alert('Error uploading product.');
-            router.push('/products')
+            alert('Error uploading product.');
+            router.push('/products');
         } finally {
             setLoading(false);
         }
@@ -63,45 +58,34 @@ function Products() {
         const files = Array.from(e.target.files);
         setImages(files);
 
-        const previews = files.map(file => URL.createObjectURL(file));
+        const previews = files.map((file) => URL.createObjectURL(file));
         setImagePreviews(previews);
     };
 
     useEffect(() => {
-
         const fetchcategories = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/categories');
                 console.log(response.status);
                 console.log(response);
 
-                if (!response.status == 200) {
+                if (response.status !== 200) {
                     throw new Error('Network response was not ok');
-
-                }
-                const contentType = response.headers.get('content-type');
-                if (!contentType || !contentType.includes('application/json')) {
-                    throw new TypeError('Expected JSON response from server');
                 }
 
-                const data = await response.data;
+                const data = response.data; // Corrected to directly use response.data
                 console.log(data);
                 setlistcategory(data);
-            }
-            catch (error) {
-                console.error('Error fetching products:', error);
-                setError(error);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
             }
         };
 
         fetchcategories();
-
-    }, [listcategory]);
-
+    }, []); // Run only once on component mount
 
     return (
-
-        <div className='className="flex mx-auto max-w-2xl justify-center bg-white h-screen w-screen '>
+        <div className='flex mx-auto max-w-2xl justify-center bg-white h-screen w-screen'>
             <form onSubmit={handleSubmit}>
                 {/* Title */}
                 <div className="grid grid-cols-2 items-center my-4 mt-5">
@@ -113,30 +97,11 @@ function Products() {
                             placeholder="Title of product"
                             required
                             value={title}
-                            onChange={ev => setTitle(ev.target.value)}
+                            onChange={(ev) => setTitle(ev.target.value)}
                         />
                     </div>
                 </div>
                 {/* Options */}
-                {/* <div>
-                    <label htmlFor="category" className="block text-lg font-medium text-gray-900">
-                        Select Category
-                    </label>
-                    <select
-                        className="mt-1.5 p-3 w-full rounded-md border border-gray-300 text-gray-700"
-                        value={category}
-                        onChange={(ev) => setcategory(ev.target.value)}
-                    >
-                        
-                        <option value="0">No category selected</option>
-                        <option value="Tshirts">Tshirts</option>
-                        <option value="Jeans">Jeans</option>
-                        <option value="Wallets">Wallets</option>
-                        <option value="Shoes">Shoes</option>
-                        
-                        
-                    </select>
-                </div> */}
                 <div>
                     <label htmlFor="category" className="block text-lg font-medium text-gray-900">
                         Select Category
@@ -147,7 +112,7 @@ function Products() {
                         onChange={(ev) => setcategory(ev.target.value)}
                     >
                         <option value="0">No category selected</option>
-                        {listcategory.map(option => (
+                        {listcategory.map((option) => (
                             <option key={option._id} value={option.name}>
                                 {option.name}
                             </option>
@@ -164,18 +129,15 @@ function Products() {
                                     <path d="M9.25 13.25a.75.75 0 001.5 0V4.636l2.955 3.129a.75.75 0 001.09-1.03l-4.25-4.5a.75.75 0 00-1.09 0l-4.25 4.5a.75.75 0 101.09 1.03L9.25 4.636v8.614z" />
                                     <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
                                 </svg>
-                                <input type="file"
-                                    onChange={handleFileChange} multiple
-                                />
+                                <input type="file" onChange={handleFileChange} multiple />
                                 {/* Upload */}
                             </label>
-
                         </div>
                     </div>
                 </div>
                 <div className="image-previews">
-                    {imagePreviews.map((preview, index) => (
-                        <img key={index} src={preview} alt={`Preview ${index}`} width="100" />
+                    {imagePreviews.map((preview, Index) => (
+                        <Image key={Index} src={preview} alt={`Preview ${Index}`} width={100} height={100} />
                     ))}
                 </div>
 
@@ -184,13 +146,12 @@ function Products() {
                     <label className="col-span-1 block text-lg font-medium text-gray-700 mb-3">Description</label>
                     <div className="col-span-2">
                         <textarea
-                            type="text"
                             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 border p-3"
                             placeholder="Description about the product"
                             rows={6}
                             required
                             value={description}
-                            onChange={ev => setDescription(ev.target.value)}
+                            onChange={(ev) => setDescription(ev.target.value)}
                         />
                     </div>
                 </div>
@@ -201,7 +162,6 @@ function Products() {
                     </label>
                     <div className="col-span-2">
                         <textarea
-                            type="text"
                             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-400 focus:ring focus:ring-primary-200 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 border p-3"
                             placeholder="Product details"
                             rows={6}
@@ -221,7 +181,7 @@ function Products() {
                             placeholder="Brand Name"
                             type="text"
                             value={brand}
-                            onChange={ev => setbrand(ev.target.value)}
+                            onChange={(ev) => setbrand(ev.target.value)}
                         />
                     </div>
 
@@ -235,7 +195,6 @@ function Products() {
                             <option value="0">Select Gender</option>
                             <option value="M">Male</option>
                             <option value="F">Female</option>
-
                         </select>
                     </div>
                 </div>
@@ -244,7 +203,6 @@ function Products() {
                     <div>
                         <label>Sizes</label>
                         <select
-                            // required:true
                             className="mt-0.5 p-2 w-full rounded-md border border-gray-300 text-gray-700"
                             value={size}
                             onChange={(ev) => setsize(ev.target.value)}
@@ -256,19 +214,17 @@ function Products() {
                             <option value="L">L</option>
                             <option value="XL">XL</option>
                             <option value="XXL">XXL</option>
-
-
                         </select>
                     </div>
 
-                    <div >
+                    <div>
                         <label>Color Options</label>
                         <input
                             className="w-full rounded-lg border border-gray-200 p-3 text-sm"
                             placeholder="Color"
                             type="text"
                             value={color}
-                            onChange={ev => setcolor(ev.target.value)}
+                            onChange={(ev) => setcolor(ev.target.value)}
                         />
                     </div>
                 </div>
@@ -282,31 +238,25 @@ function Products() {
                             placeholder="Price"
                             required
                             value={price}
-                            onChange={ev => setPrice(ev.target.value)}
+                            onChange={(ev) => setPrice(ev.target.value)}
                         />
                     </div>
                 </div>
                 {/* Submit Button */}
                 <div className="items-center my-4 justify-center">
                     <div className="col-span-2 col-start-2">
-                        {/* <button
-                            onSubmit={handleSubmit}
-                            className="rounded-lg border border-green-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300  bg-green-500"
-                        >
-                            Save Product
-                        </button> */}
                         <button
-                            className="rounded-lg border border-green-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300  bg-green-500"
-                            type="submit" disabled={loading}>{loading ? 'Uploading' : 'Upload'}</button>
+                            className="rounded-lg border border-green-500 bg-primary-500 px-5 py-2.5 text-center text-sm font-medium text-white shadow-sm transition-all hover:border-primary-700 hover:bg-primary-700 focus:ring focus:ring-primary-200 disabled:cursor-not-allowed disabled:border-primary-300 disabled:bg-primary-300 bg-green-500"
+                            type="submit"
+                            disabled={loading}
+                        >
+                            {loading ? 'Uploading' : 'Upload'}
+                        </button>
                     </div>
                 </div>
-
-
-
-
             </form>
         </div>
-    )
+    );
 }
 
 export default Products;

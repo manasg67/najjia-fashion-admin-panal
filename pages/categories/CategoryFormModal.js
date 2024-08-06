@@ -7,14 +7,15 @@ export default function CategoryFormModal({ show, onClose, fetchCategories, edit
   const [name, setName] = useState('');
   const [imageFile, setImageFile] = useState();
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
   const router = useRouter();
 
   useEffect(() => {
     if (editedCategory) {
       setName(editedCategory.name);
+      setImageFile(null); // Reset image file if editing
     } else {
       setName('');
+      setImageFile(null);
     }
   }, [editedCategory]);
 
@@ -28,8 +29,8 @@ export default function CategoryFormModal({ show, onClose, fetchCategories, edit
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!imageFile) {
-      setMessage('Please upload an image.');
+    if (!imageFile && !editedCategory) {
+      toast.error('Please upload an image.');
       return;
     }
     try {
@@ -37,49 +38,35 @@ export default function CategoryFormModal({ show, onClose, fetchCategories, edit
 
       const formData = new FormData();
       formData.append('name', name);
-      formData.append('image', imageFile);
+      if (imageFile) {
+        formData.append('image', imageFile);
+      }
 
-      const response = await axios.post('http://localhost:8000/categories', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      const response = editedCategory
+        ? await axios.put(`http://localhost:8000/categories/${editedCategory._id}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+        : await axios.post('http://localhost:8000/categories', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
 
-      toast.success("Category created successfully");
-      router.push('/categories');
+      if (editedCategory) {
+        toast.success("Category updated successfully");
+      } else {
+        toast.success("Category created successfully");
+      }
+
       if (fetchCategories) {
         fetchCategories();
       }
 
       onClose();
     } catch (error) {
-      toast.error("Failed to create category");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const updateCategories = async (e) => {
-    e.preventDefault();
-    try {
-      const { _id } = editedCategory; // Assuming editedCategory has the _id field
-
-      setLoading(true);
-
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('image', imageFile); // Assuming imageFile is the File object from input
-
-      const response = await axios.put(`http://localhost:8000/${_id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-
-      setMessage(`Category updated successfully: ${response.data.name}`);
-      onClose();
-    } catch (error) {
-      setMessage(`Error: ${error.response?.data?.error || error.message}`);
+      toast.error(`Error: ${error.response?.data?.error || error.message}`);
     } finally {
       setLoading(false);
     }
@@ -93,7 +80,7 @@ export default function CategoryFormModal({ show, onClose, fetchCategories, edit
           <h3 className="text-lg font-medium text-gray-900 mb-4">
             {editedCategory ? 'Edit Category' : 'Add Category'}
           </h3>
-          <form onSubmit={editedCategory ? updateCategories : handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative">
               <input
                 type="text"

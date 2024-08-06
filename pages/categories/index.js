@@ -124,13 +124,13 @@
 //             </tr>
 //           </thead>
 //           <tbody>
-//             {categories.map((category, index) => (
+//             {categories.map((category, Index) => (
 //               <tr key={category._id} className="bg-white-50">
-//                 <td className="px-4 py-2">{index + 1}</td>
+//                 <td className="px-4 py-2">{Index + 1}</td>
 //                 <td className="px-4 py-2">{category.name}</td>
 //                 <td className="px-4 py-2 whitespace-nowrap text-gray-700">
 //                   {category.image ? (
-//                     <img src={category.image} alt={category.name} className="h-10 w-10 object-cover rounded-full" />
+//                     <Image src={category.image} alt={category.name} className="h-10 w-10 object-cover rounded-full" />
 //                   ) : (
 //                     "No Image"
 //                   )}
@@ -303,13 +303,13 @@ export default function Categories() {
             </tr>
           </thead>
           <tbody>
-            {categories.map((category, index) => (
+            {categories.map((category, Index) => (
               <tr key={category._id} className="bg-white-50">
-                <td className="px-4 py-2">{index + 1}</td>
+                <td className="px-4 py-2">{Index + 1}</td>
                 <td style={{fontSize:21, fontWeight:'500'}} className="px-4 py-2 ">{category.name}</td>
                 <td className="px-4 py-2 whitespace-nowrap text-gray-700">
                   {category.image ? (
-                    <img src={category.image} alt={category.name} className="h-20 w-20 object-cover " />
+                    <Image src={category.image} alt={category.name} className="h-20 w-20 object-cover " />
                   ) : (
                     "No Image"
                   )}

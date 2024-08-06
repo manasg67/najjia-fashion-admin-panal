@@ -108,7 +108,7 @@ export default function Header() {
                                 </div> */}
                             </div>
                             <div className="h-10 w-10">
-                                <img className="h-full w-full rounded-full object-cover object-center" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Logo" />
+                                <Image className="h-full w-full rounded-full object-cover object-center" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="User Logo" width={34} height={34} />
 
                             </div>
 

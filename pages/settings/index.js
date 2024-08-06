@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 
-function index() {
+function Index() {
   return (
     // <div className='w-screen h-screen bg-white'>
     //   <p>Hello World</p>
@@ -46,7 +46,7 @@ function index() {
                 </label>
                 <div className="mt-2 flex items-center gap-x-3">
                   <div className="w-10 h-10">
-                    <img className="h-full w-full rounded-full object-contain object-center" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="" width={34} height={34} />
+                    <Image className="h-full w-full rounded-full object-contain object-center" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="" width={34} height={34} />
                   </div>
 
                   <button
@@ -119,4 +119,4 @@ function index() {
   )
 }
 
-export default index
+export default Index

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function index() {
+function Index() {
   return (
     <div className='h-screen w-screen bg-white'>
       <p>Hello World</p>
@@ -8,4 +8,4 @@ function index() {
   )
 }
 
-export default index
+export default Index

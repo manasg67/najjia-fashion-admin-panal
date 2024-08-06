@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import Image from 'next/image'; // Make sure to import the Image component
 
 const EditProduct = () => {
     const router = useRouter();
     const { id } = router.query;
 
-    const [listcategory, setlistcategory] = useState([]);
+    const [listcategory, setListCategory] = useState([]);
     const [product, setProduct] = useState({
         title: '',
         description: '',
@@ -17,11 +18,9 @@ const EditProduct = () => {
         sizes: '',
         gender: '',
         images: [],
-        category: '',
-        listcategory:[]
-      
+        category: ''
     });
-    
+
     const [imagePreviews, setImagePreviews] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -47,40 +46,45 @@ const EditProduct = () => {
                 });
         }
 
-        const fetchcategories = async () => {
+        const fetchCategories = async () => {
             try {
                 const response = await axios.get('http://localhost:8000/categories');
-                console.log(response.status);
-                console.log(response);
-
-                if (!response.status == 200) {
+                if (response.status !== 200) {
                     throw new Error('Network response was not ok');
-
                 }
-                const contentType = response.headers.get('content-type');
+                const contentType = response.headers['content-type'];
                 if (!contentType || !contentType.includes('application/json')) {
                     throw new TypeError('Expected JSON response from server');
                 }
-
-                const data = await response.data;
-                console.log(data);
-                setlistcategory(data);
-            }
-            catch (error) {
-                console.error('Error fetching products:', error);
+                const data = response.data;
+                setListCategory(data);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
                 setError(error);
             }
         };
 
-        fetchcategories();
-
-    }, [id, listcategory]);
+        fetchCategories();
+    }, [id]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.put(`http://localhost:8000/products/${id}`, product);
+            const formData = new FormData();
+            for (const key in product) {
+                formData.append(key, product[key]);
+            }
+            if (product.images.length > 0) {
+                for (const file of product.images) {
+                    formData.append('images', file);
+                }
+            }
+            const response = await axios.put(`http://localhost:8000/products/${id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             if (response.status === 200) {
                 alert("Product Updated Successfully");
                 router.push('/products');
@@ -128,22 +132,24 @@ const EditProduct = () => {
                     </div>
                     
                     <div>
-                    <label htmlFor="category" className="block text-lg font-medium text-gray-900">
-                        Select Category
-                    </label>
-                    <select
-                        className="mt-1.5 p-3 w-full rounded-md border border-gray-300 text-gray-700"
-                        value={product.category}
-                        onChange={handleChange}
-                    >
-                        <option value="0">No category selected</option>
-                        {listcategory.map(option => (
-                            <option key={option._id} value={option.name}>
-                                {option.name}
-                            </option>
-                        ))}
-                    </select>
-                </div> 
+                        <label htmlFor="category" className="block text-lg font-medium text-gray-900">
+                            Select Category
+                        </label>
+                        <select
+                            name="category"
+                            className="mt-1.5 p-3 w-full rounded-md border border-gray-300 text-gray-700"
+                            value={product.category}
+                            onChange={handleChange}
+                        >
+                            <option value="">Select a category</option>
+                            {listcategory.map(option => (
+                                <option key={option._id} value={option.name}>
+                                    {option.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div> 
+
                     {/* Upload Image */}
                     <div className="flex flex-col gap-4 mt-5">
                         <div className="flex items-center">
@@ -162,7 +168,7 @@ const EditProduct = () => {
                     </div>
                     <div className="image-previews mt-4">
                         {imagePreviews.map((preview, index) => (
-                            <img key={index} src={preview} alt={`Preview ${index}`} width="100" />
+                            <Image key={index} src={preview} alt={`Preview ${index}`} width={100} height={100} />
                         ))}
                     </div>
                     {/* Description Input */}
@@ -284,4 +290,3 @@ const EditProduct = () => {
 };
 
 export default EditProduct;
-
